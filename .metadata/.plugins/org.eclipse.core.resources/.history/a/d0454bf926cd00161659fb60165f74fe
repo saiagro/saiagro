@@ -1,0 +1,5 @@
+package com.erudex.akshara.dao;
+
+public interface ProductDao {
+
+}

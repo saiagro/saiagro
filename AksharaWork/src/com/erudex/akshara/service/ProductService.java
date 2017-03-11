@@ -1,0 +1,12 @@
+package com.erudex.akshara.service;
+
+import java.util.List;
+
+import com.erudex.akshara.model.Product;
+
+public interface ProductService {
+	public void addProduct(Product product);
+	public List<Product> listProducts();
+	public Product getProduct(int product_id);
+	public void deleteProduct(int product_id);
+}

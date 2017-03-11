@@ -1,0 +1,16 @@
+package com.erudex.akshara.service;
+
+import org.springframework.stereotype.Service;
+
+import com.erudex.akshara.model.Packing;
+
+@Service("packingService")
+public class PackingServiceImpl implements PackingService {
+
+	@Override
+	public void addPacking(Packing packing) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

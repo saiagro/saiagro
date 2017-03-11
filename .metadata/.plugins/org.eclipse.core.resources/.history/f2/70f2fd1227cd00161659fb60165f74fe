@@ -1,0 +1,13 @@
+package com.erudex.akshara.dao;
+
+import com.erudex.akshara.model.Product;
+
+public class ProductDaoImpl implements ProductDao {
+
+	@Override
+	public void addProduct(Product product) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+<fullyQualifiedTypeName name="com.erudex.akshara.dao.AccountTypeDao"/>
+<fullyQualifiedTypeName name="com.erudex.akshara.model.State"/>
+<fullyQualifiedTypeName name="org.hibernate.SessionFactory"/>
+<fullyQualifiedTypeName name="com.erudex.akshara.service.AccountsService"/>
+<fullyQualifiedTypeName name="com.erudex.akshara.dao.AccountPhoneDao"/>
+<fullyQualifiedTypeName name="com.erudex.akshara.model.Email"/>
+<fullyQualifiedTypeName name="com.sai.agro.bean.UserBean"/>
+<fullyQualifiedTypeName name="com.sai.agro.model.User"/>
+<fullyQualifiedTypeName name="com.sai.agro.bean.ProductBean"/>
+<fullyQualifiedTypeName name="com.sai.agro.model.TechnicalName"/>
+<fullyQualifiedTypeName name="org.hibernate.criterion.Restrictions"/>
+<fullyQualifiedTypeName name="javax.persistence.CascadeType"/>
+<fullyQualifiedTypeName name="java.util.Date"/>
+<fullyQualifiedTypeName name="javax.persistence.Entity"/>
+<fullyQualifiedTypeName name="javax.persistence.Table"/>
+<fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="org.springframework.transaction.annotation.Propagation"/>
+<fullyQualifiedTypeName name="java.lang.System"/>
+<fullyQualifiedTypeName name="com.sun.javafx.image.IntPixelGetter"/>
+<fullyQualifiedTypeName name="java.text.DateFormat"/>
+</qualifiedTypeNameHistroy>

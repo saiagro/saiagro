@@ -1,0 +1,7 @@
+package com.erudex.akshara.service;
+
+import com.erudex.akshara.model.Catagory;
+
+public interface CatagoryService {
+	public void addCatagory(Catagory catagory);
+}

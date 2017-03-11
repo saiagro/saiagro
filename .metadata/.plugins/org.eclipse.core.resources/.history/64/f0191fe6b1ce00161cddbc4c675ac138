@@ -1,0 +1,33 @@
+package com.erudex.akshara.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.erudex.akshara.dao.TechnicalNameDao;
+import com.erudex.akshara.model.TechnicalName;
+
+@Service("technicalNameService")
+@Transactional(propagation=Propagation.SUPPORTS,readOnly=true)
+public class TechnicalNameServiceImpl implements TechnicalNameService {
+
+	@Autowired
+	private TechnicalNameDao technicalNameDao;
+	
+	@Override
+	@Transactional(propagation=Propagation.REQUIRED,readOnly=false)	
+	public void addTechnicalName(TechnicalName technicalName) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<TechnicalName> listTechnicalNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

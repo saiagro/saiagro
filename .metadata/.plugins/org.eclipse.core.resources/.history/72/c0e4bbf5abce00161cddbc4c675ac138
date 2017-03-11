@@ -1,0 +1,8 @@
+package com.erudex.akshara.service;
+
+import com.erudex.akshara.model.Packing;
+
+public interface PackingService {
+	public void addPacking(Packing packing);
+
+}

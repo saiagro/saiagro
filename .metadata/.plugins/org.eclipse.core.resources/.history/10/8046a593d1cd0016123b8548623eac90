@@ -1,0 +1,9 @@
+package com.erudex.akshara.dao;
+
+import com.erudex.akshara.model.Product;
+
+
+public interface ProductDao {
+	public void addProduct(Product product);
+	public List<Product> listEmployeess();
+}

@@ -1,0 +1,6 @@
+package com.erudex.akshara.bean;
+
+public class PackingBean {
+	private int packing_id;
+
+}

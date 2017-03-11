@@ -1,0 +1,6 @@
+package com.erudex.akshara.controller;
+
+@Controller
+public class Controller {
+
+}

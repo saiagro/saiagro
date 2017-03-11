@@ -1,0 +1,108 @@
+ function addProductRate(e)
+ {
+	 console.log('HIi');
+	 console.log('find');
+	 console.log('enteredValue: '+e);
+	 if (e.keyCode == 13) {
+         alert("Enter pressed");
+         return false; // prevent the button click from happening
+     }
+		/*if (e.keyCode == 27) {
+         alert("Escape pressed");
+         return false; // prevent the button click from happening
+     }*/
+	 var markup='<tr>'+
+         '<th class="col-sm-1"><input type="text" placeholder="ProductCode" name="product_code" id="product_code" class="form-control" onKeypress="getProducts(this.value);"></th>'+
+         '<th class="col-sm-2"><input type="text" placeholder="Description" name="product_name" id="product_name" class="form-control"></th>'+
+         '<th class="col-sm-1"><input type="text" placeholder="Technical" name="technical_name" id="technical_name" class="form-control"></th>'+
+         '<th class="col-sm-1"><input type="text" placeholder="Packing" name="packing_name" id="packing_name" class="form-control"></th>'+
+         '<th class="col-sm-1"><input type="text" placeholder="Quantity" name="sale_rate" id="sale_rate" class="form-control" ></th>'+
+         '<th class="col-sm-1"><input type="text" placeholder="Rate" name="sale_rate" id="sale_rate" class="form-control" ></th>'+
+         '<th class="col-sm-1"><input type="text" placeholder="Batch" name="batch" id="batch" class="form-control" ></th>'+
+         '<th class="col-sm-2"><input type="text" placeholder="MfgDate" name="batch" id="batch" class="form-control" ></th>'+
+         '<th class="col-sm-2"><input type="text" placeholder="ExpDate" name="sale_rate" id="sale_rate" class="form-control sale_rate" ></th>'+
+       '</tr>';
+	 $("#addEmailRow").before(markup);
+     e.preventDefault();
+	 return false;
+ }
+
+	$('#sale_rate').bind('keydown',function(e){
+        if (e.keyCode == 13) {
+            confirm("Are you sure to add another product");
+//            var markup='<tr><th class="col-sm-2"><input type="text" placeholder="Product Code" name="product_code" id="product_code" class="form-control" onKeypress="getProducts(this.value);"></th><th class="col-sm-2"><input type="text" placeholder="Product Name" name="product_name" id="product_name" class="form-control"></th><th class="col-sm-2"><input type="text" placeholder="Technical Name" name="technical_name" id="technical_name" class="form-control"></th><th class="col-sm-2"><input type="text" placeholder="Packing Name" name="packing_name" id="packing_name" class="form-control"></th><th class="col-sm-2"><input type="text" placeholder="Rate" name="sale_rate" id="sale_rate" class="form-control" onclick="addProductRate()"></th></tr>';
+            var markup='<tr>'+
+            '<th class="col-sm-1"><input type="text" placeholder="ProductCode" name="product_code" id="product_code" class="form-control" onKeypress="getProducts(this.value);"></th>'+
+            '<th class="col-sm-2"><input type="text" placeholder="Description" name="product_name" id="product_name" class="form-control"></th>'+
+            '<th class="col-sm-1"><input type="text" placeholder="Technical" name="technical_name" id="technical_name" class="form-control"></th>'+
+            '<th class="col-sm-1"><input type="text" placeholder="Packing" name="packing_name" id="packing_name" class="form-control"></th>'+
+            '<th class="col-sm-1"><input type="text" placeholder="Quantity" name="sale_rate" id="sale_rate" class="form-control" ></th>'+
+            '<th class="col-sm-1"><input type="text" placeholder="Rate" name="sale_rate" id="sale_rate" class="form-control" ></th>'+
+            '<th class="col-sm-1"><input type="text" placeholder="Batch" name="batch" id="batch" class="form-control" ></th>'+
+            '<th class="col-sm-2"><input type="text" placeholder="MfgDate" name="batch" id="batch" class="form-control" ></th>'+
+            '<th class="col-sm-2"><input type="text" placeholder="ExpDate" name="sale_rate" id="sale_rate" class="form-control sale_rate" ></th>'+
+          '</tr>';
+       	    $("#addEmailRow").before(markup);
+//       	    $(this).removeClass('sale_rate');
+            e.preventDefault();
+        }
+		if (e.keyCode == 27) {
+			$('#saveMaterialReceivedEntry').attr('disabled',false);
+            alert("Escape pressed");
+            return false; // prevent the button click from happening
+        }
+});	
+	
+function getSupplierCode(product_code){
+	 $('#supllier_code').autocomplete({
+	        minLength: 2,
+	        search: function (e, u) {
+             $('#supllier_code').addClass('loader');
+         },
+         response: function (e, u) {
+             $('#supllier_code').removeClass('loader');
+         },
+	        source:function(request, response) {
+              $.ajax({
+                     url : "getSupplierName.html?product_code="+product_code,
+                     type : "POST",
+                     dataType : "json",
+                     success : function( data ) {
+                     	if(!data.length){
+                     		var result = [
+                     		       {
+                     		       label: 'No Data found', 
+                     		       value: response.term
+                     		       }
+                     		     ];
+                     		 console.log("no Data Found");
+                     		 response(result);
+                        }else
+                     	   {
+                     	   response( $.map( data, function( item ) {
+                                return { 
+                                	label: item.account_code/*+', '+item.brand*/, 
+                                    value: item.account_code, //value: item.route_name+', '+item.route_grade+', '+item.area_name, 
+                                    account_name: item.account_name/*, //value: item.route_name+', '+item.route_grade+', '+item.area_name, 
+                                    model_no: item.model_no, //value: item.route_name+', '+item.route_grade+', '+item.area_name, 
+                                    qty: item.qty,
+                                    product_info_id: item.product_info_id,
+                                    approx_cost: item.approx_cost*/
+                                  }   
+                            }));
+                     	 }
+                     }
+                 });
+             },
+	        select:function (e, t) {
+	             console.log($(this).val(t.item.label));
+	             $("#supplier_name").val(t.item.account_name);
+/*	              $(this).closest('tr').find('.product_info_id').val(t.item.product_info_id);
+	              $(this).closest('tr').find('.brand').val(t.item.brand);
+	              $(this).closest('tr').find('.model_no').val(t.item.model_no);
+	              $(this).closest('tr').find('.qty').val(t.item.qty);
+	              $(this).closest('tr').find('.approx_cost').val(t.item.approx_cost);
+*/             return false;
+	        }
+	    }) 
+}

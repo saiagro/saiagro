@@ -1,0 +1,6 @@
+
+ function runTable()
+ {
+ $('#productListTable').DataTable();
+ }
+ 

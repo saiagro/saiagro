@@ -1,0 +1,6 @@
+package com.erudex.akshara.dao;
+
+public interface ProductDao {
+	public void addProduct(Product product);
+
+}

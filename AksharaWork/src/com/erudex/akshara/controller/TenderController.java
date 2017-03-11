@@ -1,0 +1,435 @@
+package com.erudex.akshara.controller;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.erudex.akshara.bean.CatagoryBean;
+import com.erudex.akshara.bean.PackingBean;
+import com.erudex.akshara.bean.ProductBean;
+import com.erudex.akshara.bean.TechnicalNameBean;
+import com.erudex.akshara.model.Catagory;
+import com.erudex.akshara.model.Packing;
+import com.erudex.akshara.model.Product;
+import com.erudex.akshara.model.TechnicalName;
+import com.erudex.akshara.service.CatagoryService;
+import com.erudex.akshara.service.PackingService;
+import com.erudex.akshara.service.ProductService;
+import com.erudex.akshara.service.TechnicalNameService;
+
+@Controller
+public class TenderController {
+
+	@Autowired
+	private ProductService productService;
+	
+	@Autowired
+	private PackingService packingService;
+	
+	@Autowired
+	private TechnicalNameService technicalNameService;
+	
+	@Autowired
+	private CatagoryService catagoryService;
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
+	            dateFormat, false));
+	}
+	
+	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
+	public ModelAndView Student() {
+		return new ModelAndView("accounts");
+	}
+	
+	@RequestMapping(value = "/journalVouchersEntry", method = RequestMethod.GET)
+	public ModelAndView journalVoucher() {
+		return new ModelAndView("journalVouchersEntry");
+	}
+	
+	@RequestMapping(value = "/productOpeningStockEntry", method = RequestMethod.GET)
+	public ModelAndView productOpeningStockEntry() {
+		return new ModelAndView("productOpeningStockEntry");
+	}
+	
+	@RequestMapping(value = "/packing", method = RequestMethod.GET)
+	public ModelAndView packing(@ModelAttribute("packing") PackingBean packingBean,BindingResult result) {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("product", new Packing());
+		return new ModelAndView("packing",model);
+	}
+	
+	@RequestMapping(value = "/savePacking", method = RequestMethod.POST)
+	public ModelAndView savePacking(@ModelAttribute("packing") PackingBean packingBean,BindingResult result) {
+//		Map<String, Object> model = new HashMap<String, Object>();
+		Packing packing=prepareModel(packingBean);
+		packingService.addPacking(packing);
+//		model.put("packing", null);
+		return new ModelAndView("redirect:packing.html");
+	}
+	
+	@RequestMapping(value = "/editPacking", method = RequestMethod.POST)
+	public ModelAndView editPacking(@ModelAttribute("packing") PackingBean packingBean,BindingResult result) {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("packing", preparePackingBean(packingService.getPacking(packingBean.getPacking_id())));
+		return new ModelAndView("packing",model);
+	}
+	
+	@RequestMapping(value = "/deletePacking", method = RequestMethod.POST)
+	public ModelAndView deletePacking(@ModelAttribute("packing") PackingBean packingBean,BindingResult result) {
+		Map<String, Object> model = new HashMap<String, Object>();
+		packingService.deletePacking(packingBean.getPacking_id());
+		model.put("packingList", preparePackingBeanList(packingService.listPacking()));
+		return new ModelAndView("packingList",model);
+	}
+	
+	@RequestMapping(value = "/packingList", method = RequestMethod.POST)
+	public ModelAndView listPacking(@ModelAttribute("packing") PackingBean packingBean,BindingResult result) {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("packingList", preparePackingBeanList(packingService.listPacking()));
+		return new ModelAndView("packingList",model);
+	}
+	
+	private Object preparePackingBeanList(List<Packing> listPacking) {
+		List<PackingBean> packingBeanList=new ArrayList<PackingBean>();	
+		for(Packing packing:listPacking)
+		{
+			PackingBean packingBean=new PackingBean();
+			packingBean.setPacking_id(packing.getPacking_id());
+			packingBean.setPacking_name(packing.getPacking_name());
+			packingBeanList.add(packingBean);
+		}
+		return packingBeanList;
+	}
+
+	private PackingBean preparePackingBean(Packing packing) {
+        PackingBean packingBean=new PackingBean();
+        packingBean.setPacking_id(packing.getPacking_id());
+        packingBean.setPacking_name(packing.getPacking_name());
+		return packingBean;
+	}
+
+	private Packing prepareModel(PackingBean packingBean) {
+		Packing packing=new Packing();
+	    packing.setPacking_id(packingBean.getPacking_id());  
+	    packing.setPacking_name(packingBean.getPacking_name());
+		return packing;
+	}
+
+	@RequestMapping(value="/productInformationMaster", method= RequestMethod.GET)
+	public ModelAndView productInformationMaster(){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("product", new Product());
+		model.put("packingList", preparePackingList(packingService.listPacking()));
+		model.put("technicalList", prepareTechnicalList(technicalNameService.listTechnicalNames()));
+		model.put("catagoryList", prepareCatagoryList(catagoryService.listCatagory()));
+		return new ModelAndView("productInformationMaster",model);
+	}
+	
+	@RequestMapping(value="/technical", method= RequestMethod.GET)
+	public ModelAndView technical(@ModelAttribute("productInformation") TechnicalNameBean technicalNameBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("technical", new TechnicalName());
+//		model.put("technicalList", prepareListTechnical(technicalNameService.listTechnicalNames()));
+		return new ModelAndView("technical",model);
+	}
+	
+	@RequestMapping(value="/technicalList", method= RequestMethod.POST)
+	public ModelAndView technicalList(@ModelAttribute("productInformation") TechnicalNameBean technicalNameBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("technical", new TechnicalName());
+		model.put("technicalList", prepareListTechnical(technicalNameService.listTechnicalNames()));
+		return new ModelAndView("technicalList",model);
+	}
+	
+	@RequestMapping(value="/editTechnical", method= RequestMethod.POST)
+	public ModelAndView editTechnical(@ModelAttribute("technical") TechnicalNameBean technicalNameBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("technical", prepareTechnicalNameBean(technicalNameService.getTechnicalName(technicalNameBean.getTechnical_id())));
+		return new ModelAndView("technical",model);
+	}
+	
+	@RequestMapping(value="/deleteTechnical", method= RequestMethod.POST)
+	public ModelAndView deleteTechnical(@ModelAttribute("technical") TechnicalNameBean technicalNameBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		technicalNameService.deleteTechnicalName(technicalNameBean.getTechnical_id());
+		model.put("technical", new TechnicalName());
+		model.put("technicalList", prepareListTechnical(technicalNameService.listTechnicalNames()));
+		return new ModelAndView("technicalList",model);
+	}
+
+
+	private Object prepareTechnicalNameBean(TechnicalName technicalName) {
+		TechnicalNameBean technicalNameBean=new TechnicalNameBean();
+		technicalNameBean.setTechnical_id(technicalName.getTechnical_id());
+		technicalNameBean.setTechnical_name(technicalName.getTechnical_name());
+		return technicalNameBean;
+	}
+
+	@RequestMapping(value="/saveTechnical", method= RequestMethod.POST)
+	public ModelAndView saveTechnical(@ModelAttribute("productInformation") TechnicalNameBean technicalNameBean){
+//		Map<String, Object> model = new HashMap<String, Object>();
+		TechnicalName technicalName=prepareTechnicalName(technicalNameBean);
+		technicalNameService.addTechnicalName(technicalName);
+//		model.put("technical", new TechnicalName());
+//		model.put("technicalList", prepareListTechnical(technicalNameService.listTechnicalNames()));
+		return new ModelAndView("redirect:technical.html");
+	}
+	
+	private TechnicalName prepareTechnicalName(TechnicalNameBean technicalNameBean) {
+		TechnicalName technicalName=new TechnicalName();
+		technicalName.setTechnical_id(technicalNameBean.getTechnical_id());
+		technicalName.setTechnical_name(technicalNameBean.getTechnical_name());
+		technicalNameBean.setTechnical_id(null);
+		return technicalName;
+	}
+
+	private Object prepareCatagoryList(List<Catagory> listCatagory) {
+		Map<Integer,String> catagoryList = new LinkedHashMap<Integer,String>();
+		for(Catagory catgory:listCatagory)
+		{
+			catagoryList.put(catgory.getCatagory_id(),catgory.getCatagory_name());
+		}
+		return catagoryList;
+	}
+	
+	private Object prepareTechnicalList(List<TechnicalName> listTechnicalNames) {
+		Map<Integer,String> technicalList = new LinkedHashMap<Integer,String>();
+		for(TechnicalName technicalName:listTechnicalNames)
+		{
+			technicalList.put(technicalName.getTechnical_id(), technicalName.getTechnical_name());
+		}
+		return technicalList;
+	}
+	
+	private Object prepareListTechnical(List<TechnicalName> listTechnicalNames) {
+		List<TechnicalNameBean> technicalBeanList=new ArrayList<TechnicalNameBean>();
+		for(TechnicalName technicalName:listTechnicalNames)
+		{
+			TechnicalNameBean technicalBean=new TechnicalNameBean();
+			technicalBean.setTechnical_id(technicalName.getTechnical_id());
+			technicalBean.setTechnical_name(technicalName.getTechnical_name());
+			technicalBeanList.add(technicalBean);
+		}
+		return technicalBeanList;
+	}
+	private Object preparePackingList(List<Packing> listPacking) {
+		Map<Integer,String> packingList = new LinkedHashMap<Integer,String>();
+		for(Packing packing:listPacking)
+		{
+			packingList.put(packing.getPacking_id(), packing.getPacking_name());
+		}
+		return packingList;
+	}
+	
+	@RequestMapping(value="/catagory", method= RequestMethod.GET)
+	public ModelAndView Catagory(@ModelAttribute("catagory") CatagoryBean catagoryBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("catagory", new Catagory());
+		return new ModelAndView("catagory",model);
+	} 
+	
+	@RequestMapping(value="/saveCatagory", method= RequestMethod.POST)
+	public ModelAndView saveCatagory(@ModelAttribute("catagory") CatagoryBean catagoryBean){
+//		Map<String, Object> model = new HashMap<String, Object>();
+		Catagory catagory=prepareModel(catagoryBean);
+		catagoryService.addCatagory(catagory);
+//		model.put("catagory", new Catagory());
+//		model.put("catagoryList", prepareListCatagoryBean(catagoryService.listCatagory()));
+		return new ModelAndView("redirect:catagory.html");
+	} 
+	
+	@RequestMapping(value="/catagoryList", method= RequestMethod.POST)
+	public ModelAndView listCatagory(@ModelAttribute("catagory") CatagoryBean catagoryBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("catagoryList", prepareListCatagoryBean(catagoryService.listCatagory()));
+		return new ModelAndView("catagoryList",model);
+	} 
+	
+	@RequestMapping(value="/deleteCatagory", method= RequestMethod.POST)
+	public ModelAndView deleteCatagory(@ModelAttribute("catagory") CatagoryBean catagoryBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		catagoryService.deleteCatagory(catagoryBean.getCatagory_id());
+		model.put("catagoryList", prepareListCatagoryBean(catagoryService.listCatagory()));
+		return new ModelAndView("catagoryList",model);
+	} 
+
+	@RequestMapping(value="/editCatagory", method= RequestMethod.POST)
+	public ModelAndView editCatagory(@ModelAttribute("catagory") CatagoryBean catagoryBean){
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("catagory", PrepareCatagoryBean(catagoryService.getCatagory(catagoryBean.getCatagory_id())));
+//		model.put("catagoryList", prepareListCatagory(catagoryService.listCatagory()));
+		return new ModelAndView("catagory",model);
+	} 
+	
+	private Object prepareListCatagoryBean(List<Catagory> listCatagory) {
+	 	List<CatagoryBean> listCatagoryBean=new ArrayList<CatagoryBean>();
+		for(Catagory catagory:listCatagory)
+		{
+			CatagoryBean catagoryBean=new CatagoryBean();
+			catagoryBean.setCatagory_id(catagory.getCatagory_id());
+			catagoryBean.setCatagory_name(catagory.getCatagory_name());
+			System.out.println(catagory.getCatagory_id()+"id");
+			System.out.println(catagory.getCatagory_name()+"name");
+			listCatagoryBean.add(catagoryBean);
+		}
+		return listCatagoryBean;
+	}
+
+	
+	
+	private Object PrepareCatagoryBean(Catagory catagory) {
+		CatagoryBean catagoryBean=new CatagoryBean();
+		catagoryBean.setCatagory_id(catagory.getCatagory_id());
+		catagoryBean.setCatagory_name(catagory.getCatagory_name());
+		return catagory;
+	}
+
+	private Catagory prepareModel(CatagoryBean catagoryBean) {
+		Catagory catagory=new Catagory();
+		catagory.setCatagory_id(catagoryBean.getCatagory_id());
+		catagory.setCatagory_name(catagoryBean.getCatagory_name());
+		return catagory;
+	}
+
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public ModelAndView welcome() {
+		return new ModelAndView("index");
+	}
+	
+	@RequestMapping(value="/saveProductInformation", method= RequestMethod.POST)
+	public ModelAndView saveProductInformationMaster(@ModelAttribute("productInformation") ProductBean productBean,
+			BindingResult result,Model model){
+     Product product=prepareModel(productBean);
+     productService.addProduct(product);
+	 return new ModelAndView("redirect:productInformationMaster.html");
+	}
+	
+	@RequestMapping(value="/productList", method = RequestMethod.POST)
+	public ModelAndView listProducts() {
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("productList",  prepareListofBean(productService.listProducts()));
+		return new ModelAndView("productList", model);
+	}
+	
+	@RequestMapping(value="/editProduct", method = RequestMethod.POST)
+	public ModelAndView editProduct(@ModelAttribute("productInformation") ProductBean productBean,
+			BindingResult result,Model model1) {
+		System.out.println("The value of Id form Edit Product:"+productBean.getProduct_id());
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		Map<String,String> packing = new LinkedHashMap<String,String>();
+		packing.put("1", "100gms");
+		packing.put("2", "250gms");
+		packing.put("3", "500gms");
+		packing.put("4", "1Kg");
+		model.put("packingList",packing);
+		
+		Map<String,String> technicalName = new LinkedHashMap<String,String>();
+		technicalName.put("1", "SFate");
+		technicalName.put("2", "AWCEPHATE");
+		technicalName.put("3", "NEWQWQ");
+        model.put("technicalList", technicalName);		
+		
+        Map<String,String> catagory = new LinkedHashMap<String,String>();
+        catagory.put("1", "Catagory A");
+        catagory.put("2", "Catagory B");
+        catagory.put("3", "Catagory C");
+        model.put("catagoryList", catagory);
+        
+		model.put("product",  prepareProductBean(productService.getProduct(productBean.getProduct_id())));
+		return new ModelAndView("productInformationMaster",model);
+	}
+	
+	@RequestMapping(value="/deleteProduct", method = RequestMethod.POST)
+	public ModelAndView deleteProduct(@RequestParam("id") String product_id) {
+		System.out.println("The value of Id"+product_id);
+		productService.deleteProduct(Integer.parseInt(product_id));
+		Map<String, Object> model = new HashMap<String, Object>();
+		model.put("productList",  prepareListofBean(productService.listProducts()));
+		return new ModelAndView("productList",model);
+	}
+	
+	private Object prepareProductBean(Product product) {
+		ProductBean productBean=new ProductBean();
+    	productBean.setProduct_code(product.getProduct_code());
+    	productBean.setProduct_name(product.getProduct_name());
+    	productBean.setPacking_id(product.getPacking_id());
+    	productBean.setCatagory_id(product.getCatagory_id());
+    	productBean.setTechnical_id(product.getTechnical_id());
+    	productBean.setCompany_code(product.getCompany_code());
+    	productBean.setQuantity_on_hand(product.getQuantity_on_hand());
+    	productBean.setPurchase_rate(product.getPurchase_rate());
+    	productBean.setSale_rate(product.getSale_rate());
+    	productBean.setMrp(product.getMrp());
+    	productBean.setVat(product.getVat());
+    	productBean.setProduct_id(product.getProduct_id());
+    	System.out.println("product_id"+product.getProduct_id());
+		return productBean;
+	}
+	
+	private Object prepareListofBean(List<Product> listProducts) {
+		List<ProductBean> productBeanList=null;
+		if(listProducts != null && !listProducts.isEmpty())
+		{
+			productBeanList=new ArrayList<ProductBean>();
+	        ProductBean productBean=null;
+	        for(Product product:listProducts)
+	        {
+	        	productBean=new ProductBean();
+	        	productBean.setProduct_id(product.getProduct_id());
+	        	productBean.setProduct_code(product.getProduct_code());
+	        	productBean.setProduct_name(product.getProduct_name());
+	        	productBean.setPacking_id(product.getPacking_id());
+	        	productBean.setCatagory_id(product.getCatagory_id());
+	        	productBean.setTechnical_id(product.getTechnical_id());
+	        	productBean.setCompany_code(product.getCompany_code());
+	        	productBean.setQuantity_on_hand(product.getQuantity_on_hand());
+	        	productBean.setPurchase_rate(product.getPurchase_rate());
+	        	productBean.setSale_rate(product.getSale_rate());
+	        	productBean.setMrp(product.getMrp());
+	        	productBean.setVat(product.getVat());
+	        	productBeanList.add(productBean);
+	        }
+		}
+		return productBeanList;
+	}
+	private Product prepareModel(ProductBean productBean) {
+		Product product=new Product();
+		product.setProduct_id(productBean.getProduct_id());
+		System.out.println("prepareModel id value:"+productBean.getProduct_id());
+		product.setProduct_code(productBean.getProduct_code());
+		product.setProduct_name(productBean.getProduct_name());
+		product.setPacking_id(productBean.getPacking_id());
+		product.setTechnical_id(productBean.getTechnical_id());
+		product.setCompany_code(productBean.getCompany_code());
+		product.setCatagory_id(productBean.getCatagory_id());
+		product.setQuantity_on_hand(productBean.getQuantity_on_hand());
+		product.setPurchase_rate(productBean.getPurchase_rate());
+		product.setSale_rate(productBean.getSale_rate());
+		product.setMrp(productBean.getMrp());
+		product.setVat(productBean.getVat());
+		productBean.setProduct_id(null);
+		return product;
+	}
+		
+}

@@ -1,0 +1,8 @@
+127.0.0.1 - - [11/Mar/2017:21:22:44 +0530] "GET / HTTP/1.1" 404 998
+127.0.0.1 - - [11/Mar/2017:21:22:49 +0530] "GET /FreeMindServices/ HTTP/1.1" 200 6339
+0:0:0:0:0:0:0:1 - - [11/Mar/2017:21:23:16 +0530] "GET /FreeMindServices/ HTTP/1.1" 200 6339
+0:0:0:0:0:0:0:1 - - [11/Mar/2017:21:23:37 +0530] "GET /favicon.ico HTTP/1.1" 404 1020
+0:0:0:0:0:0:0:1 - - [11/Mar/2017:21:23:48 +0530] "POST /FreeMindServices/login.html HTTP/1.1" 200 11548
+0:0:0:0:0:0:0:1 - - [11/Mar/2017:21:24:38 +0530] "POST /FreeMindServices/materialReceivedEntry.html HTTP/1.1" 200 19417
+0:0:0:0:0:0:0:1 - - [11/Mar/2017:21:25:34 +0530] "POST /FreeMindServices/getProductName.html?product_code=ab HTTP/1.1" 200 208
+0:0:0:0:0:0:0:1 - - [11/Mar/2017:21:25:43 +0530] "POST /FreeMindServices/purchaseInvoiceEntry.html HTTP/1.1" 200 19125

@@ -1,0 +1,35 @@
+package com.erudex.akshara.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="product")
+public class Product {
+	@Column
+	private int product_id;
+	@Column
+	private Integer product_code;
+	@Column
+	private String product_name;
+	@Column
+	private Integer packing_id;
+	@Column
+	private Integer catagory_id;
+	@Column
+	private int technical_id;
+	@Column
+	private Integer company_code;
+	@Column
+	private Integer quantity_on_hand;
+	@Column
+	private Float purchase_rate;
+	@Column
+	private Float sale_rate;
+	@Column
+	private Float mrp;
+	@Column
+	private int vat;
+	
+}

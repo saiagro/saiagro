@@ -1,0 +1,54 @@
+<aside class="main-sidebar">
+    <!-- sidebar: style can be found in sidebar.less -->
+    <section class="sidebar">
+      <!-- Sidebar Menu -->
+      <ul class="sidebar-menu">
+        <li class="header">All Forms</li>
+        <!-- Optionally, you can add icons to the links -->
+        <li class="treeview">
+          <a href="#"><i class="glyphicon glyphicon-option-vertical"></i> <span>Purchase</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a href="#">Working</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="glyphicon glyphicon-option-vertical"></i> <span>Sales</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a href="#">Working</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="glyphicon glyphicon-option-vertical"></i> <span>Financial Accounting</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a href="#">Working</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#"><i class="glyphicon glyphicon-option-vertical"></i> <span>Master Files</span> <i class="fa fa-angle-left pull-right"></i></a>
+          <ul class="treeview-menu">
+            <li><a href="accounts.html">Accounts</a></li>
+            <li><a href="journalVouchersEntry.html">Journal Vouchers Entry</a></li>
+            <li><a href="productOpeningStockEntry.html">Product Opening Stock Entry</a></li>
+            <li><a href="productInformationMaster.html">Product Information Master</a></li>
+            <li><a href="technical.html">Technical</a>
+            <li><a href="catagory.html">Category</a>
+            <li><a href="packing.html">Packing</a></li>
+            <li><a href="#">Working</a></li>
+          </ul>
+        </li>
+      </ul>
+      <!-- /.sidebar-menu -->
+    </section>
+    <!-- /.sidebar -->
+  </aside>
+  <!-- Control Sidebar -->
+   <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Create the tabs -->
+    <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
+      <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+  </aside>
+  <div class="control-sidebar-bg"></div>

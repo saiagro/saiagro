@@ -1,0 +1,19 @@
+package com.erudex.akshara.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.erudex.akshara.model.Packing;
+
+@Service("packingService")
+@Transactional(propagation=Propagation.SUPPORTS)
+public class PackingServiceImpl implements PackingService {
+
+	@Override
+	public void addPacking(Packing packing) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

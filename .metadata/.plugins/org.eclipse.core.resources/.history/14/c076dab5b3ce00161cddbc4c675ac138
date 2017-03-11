@@ -1,0 +1,7 @@
+package com.erudex.akshara.dao;
+
+import com.erudex.akshara.model.Catagory;
+
+public interface CatagoryDao {
+	public void addCatagory(Catagory catagory);
+}

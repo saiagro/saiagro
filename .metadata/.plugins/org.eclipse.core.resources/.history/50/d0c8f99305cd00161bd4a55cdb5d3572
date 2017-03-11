@@ -1,0 +1,7 @@
+package com.erudex.akshara.model;
+
+public class Catagory {
+	private int catagory_id;
+	private String catagory_name;
+
+}

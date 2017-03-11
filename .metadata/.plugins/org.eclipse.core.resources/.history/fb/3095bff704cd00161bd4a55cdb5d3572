@@ -1,0 +1,19 @@
+package com.erudex.akshara.bean;
+
+public class TechnicalNameBean {
+	private int technical_name_id;
+	private String technical_name;
+	public int getTechnical_name_id() {
+		return technical_name_id;
+	}
+	public void setTechnical_name_id(int technical_name_id) {
+		this.technical_name_id = technical_name_id;
+	}
+	public String getTechnical_name() {
+		return technical_name;
+	}
+	public void setTechnical_name(String technical_name) {
+		this.technical_name = technical_name;
+	}
+	
+}

@@ -1,0 +1,10 @@
+package com.erudex.akshara.dao;
+
+import java.util.List;
+
+import com.erudex.akshara.model.Catagory;
+
+public interface CatagoryDao {
+	public void addCatagory(Catagory catagory);
+	public List<Catagory> listCatagory();
+}

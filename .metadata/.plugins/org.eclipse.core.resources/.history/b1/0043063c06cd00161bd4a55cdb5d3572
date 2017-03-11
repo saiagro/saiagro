@@ -1,0 +1,17 @@
+package com.erudex.akshara.model;
+
+public class Product {
+	private int product_id;
+	private int product_code;
+	private String product_name;
+	private int packing_id;
+	private int catagory_id;
+	private int technical_id;
+	private String company_code;
+	private int quantity_on_hand;
+	private Float purchase_rate;
+	private Float sale_rate;
+	private Float mrp;
+	private int vat;
+
+}

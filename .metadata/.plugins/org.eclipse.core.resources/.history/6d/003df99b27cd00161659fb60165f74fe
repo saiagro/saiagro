@@ -1,0 +1,19 @@
+package com.erudex.akshara.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.erudex.akshara.model.Product;
+@Service("productService")
+@Transactional(propagation = Propagation.SUPPORTS,readOnly=true)
+public class ProductServiceImpl implements ProductService {
+
+	@Override
+	@Transactional(propagation = Propagation.REQUIRED,readOnly=false)
+	public void addProduct(Product product) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

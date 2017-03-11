@@ -1,0 +1,8 @@
+INDEX VERSION 1.3+E:\Vasanth.JAVA\Mywork\FreeMindServices\.metadata\.plugins\org.eclipse.wst.jsdt.core\indexes
+2061877201.index
+494073566.index
+1358307320.index
+1855302612.index
+2970713167.index
+1002187783.index
+348819304.index

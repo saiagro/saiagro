@@ -1,0 +1,13 @@
+package com.erudex.akshara.dao;
+
+import com.erudex.akshara.model.Packing;
+
+public class PackingDaoImpl implements PackingDao {
+
+	@Override
+	public void addPacking(Packing packing) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

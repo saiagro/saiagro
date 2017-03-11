@@ -1,0 +1,24 @@
+package com.erudex.akshara.dao;
+
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.erudex.akshara.model.Catagory;
+
+@Repository("catagoryDao")
+public class CatagoryDaoImpl implements CatagoryDao {
+
+	@Override
+	public void addCatagory(Catagory catagory) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<Catagory> listCatagory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

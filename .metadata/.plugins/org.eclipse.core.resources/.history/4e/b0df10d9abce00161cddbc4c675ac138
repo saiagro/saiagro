@@ -1,0 +1,20 @@
+package com.erudex.akshara.dao;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.erudex.akshara.model.Packing;
+
+@Repository("packingDao")
+public class PackingDaoImpl implements PackingDao {
+
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	@Override
+	public void addPacking(Packing packing) {
+		sessionFactory.getCurrentSession().saveOrUpdate(packing);
+	}
+
+}

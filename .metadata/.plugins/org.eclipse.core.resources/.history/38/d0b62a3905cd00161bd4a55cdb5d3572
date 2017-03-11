@@ -1,0 +1,12 @@
+package com.erudex.akshara.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table
+public class ProductPacking {
+	private int packing_id;
+	private String packing_name;
+
+}

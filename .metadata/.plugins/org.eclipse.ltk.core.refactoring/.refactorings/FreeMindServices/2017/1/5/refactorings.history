@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;FreeMindServices/WebContent/WEB-INF/views/purchaseInvoicEntry.jsp&apos; to &apos;purchaseInvoiceEntry.jsp&apos;" description="Rename resource &apos;purchaseInvoicEntry.jsp&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="WebContent/WEB-INF/views/purchaseInvoicEntry.jsp" name="purchaseInvoiceEntry.jsp" stamp="1485787426342" updateReferences="true"/>
+</session>

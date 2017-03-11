@@ -1,0 +1,8 @@
+package com.erudex.akshara.model;
+
+public class TechnicalName {
+	private int technical_id;
+	private String technical_name;
+	
+
+}

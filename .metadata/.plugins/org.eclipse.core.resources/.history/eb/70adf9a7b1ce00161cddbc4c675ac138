@@ -1,0 +1,21 @@
+package com.erudex.akshara.service;
+
+import java.util.List;
+
+import com.erudex.akshara.model.TechnicalName;
+
+public class TechnicalNameServiceImpl implements TechnicalNameService {
+
+	@Override
+	public void addTechnicalName(TechnicalName technicalName) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<TechnicalName> listTechnicalNames() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

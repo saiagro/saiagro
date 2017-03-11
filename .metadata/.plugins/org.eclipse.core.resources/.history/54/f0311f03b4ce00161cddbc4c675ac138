@@ -1,0 +1,29 @@
+package com.erudex.akshara.dao;
+
+import java.util.List;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.erudex.akshara.model.Catagory;
+
+@Repository("catagoryDao")
+public class CatagoryDaoImpl implements CatagoryDao {
+
+	
+	@Autowired
+	private SessionFactory sessionFactory;
+	
+	@Override
+	public void addCatagory(Catagory catagory) {
+		sessionFactory.getCurrentSession().saveOrUpdate(catagory);
+	}
+
+	@Override
+	public List<Catagory> listCatagory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,16 @@
+package com.erudex.akshara.dao;
+
+import org.springframework.stereotype.Repository;
+
+import com.erudex.akshara.model.Packing;
+
+@Repository("packingDao")
+public class PackingDaoImpl implements PackingDao {
+
+	@Override
+	public void addPacking(Packing packing) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

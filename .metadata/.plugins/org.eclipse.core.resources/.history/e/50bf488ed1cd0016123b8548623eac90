@@ -1,0 +1,10 @@
+package com.erudex.akshara.dao;
+
+import com.erudex.akshara.model.Product;
+
+import antlr.collections.List;
+
+public interface ProductDao {
+	public void addProduct(Product product);
+	public List<Product> listEmployeess();
+}

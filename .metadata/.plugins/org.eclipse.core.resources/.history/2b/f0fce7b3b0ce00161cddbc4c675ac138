@@ -1,0 +1,13 @@
+package com.erudex.akshara.model;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="technical_name")
+public class TechnicalName {
+	private int technical_id;
+	private String technical_name;
+	
+
+}

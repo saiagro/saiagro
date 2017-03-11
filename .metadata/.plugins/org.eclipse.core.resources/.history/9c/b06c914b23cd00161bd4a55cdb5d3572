@@ -1,0 +1,514 @@
+package com.erudex.akshara.controller;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.erudex.akshara.bean.AddressBean;
+import com.erudex.akshara.bean.AdviceMaterialBean;
+import com.erudex.akshara.bean.AdviceMaterialProductInfoBean;
+import com.erudex.akshara.bean.AdviceProductInfoBean;
+import com.erudex.akshara.bean.InterOfficeMemoBean;
+import com.erudex.akshara.bean.MaterialIndentBean;
+import com.erudex.akshara.bean.MaterialIndentProductInfoBean;
+import com.erudex.akshara.bean.PaymentModeBean;
+import com.erudex.akshara.bean.ProductInfoBean;
+import com.erudex.akshara.bean.StudentAddressBean;
+import com.erudex.akshara.bean.StudentBean;
+import com.erudex.akshara.bean.TenderBean;
+import com.erudex.akshara.bean.TenderPaymentModeBean;
+import com.erudex.akshara.model.Address;
+import com.erudex.akshara.model.AdviceMaterial;
+import com.erudex.akshara.model.AdviceMaterialProductInfo;
+import com.erudex.akshara.model.AdviceProductInfo;
+import com.erudex.akshara.model.InterOfficeMemo;
+import com.erudex.akshara.model.MaterialIndent;
+import com.erudex.akshara.model.MaterialIndentProductInfo;
+import com.erudex.akshara.model.PaymentMode;
+import com.erudex.akshara.model.Product;
+import com.erudex.akshara.model.ProductInfo;
+import com.erudex.akshara.model.Student;
+import com.erudex.akshara.model.StudentAddress;
+import com.erudex.akshara.model.Tender;
+import com.erudex.akshara.model.TenderPaymentMode;
+import com.erudex.akshara.service.AddressService;
+import com.erudex.akshara.service.AdviceMaterialProductInfoService;
+import com.erudex.akshara.service.AdviceMaterialService;
+import com.erudex.akshara.service.AdviceProductInfoService;
+import com.erudex.akshara.service.InterOfficeMemoService;
+import com.erudex.akshara.service.MaterialIndentProductInfoService;
+import com.erudex.akshara.service.MaterialIndentService;
+import com.erudex.akshara.service.PaymentModeService;
+import com.erudex.akshara.service.ProductInfoService;
+import com.erudex.akshara.service.StudentAddressService;
+import com.erudex.akshara.service.StudentService;
+import com.erudex.akshara.service.TenderPaymentModeService;
+import com.erudex.akshara.service.TenderService;
+
+@Controller
+public class TenderController {
+
+	@Autowired
+	private TenderService tenderService;
+	
+	@Autowired
+	private PaymentModeService paymentModeService;
+	
+	@Autowired
+	private TenderPaymentModeService tenderPaymentModeService;
+	
+	@Autowired
+	private InterOfficeMemoService interOfficeMemoService;
+	
+	@Autowired
+	private MaterialIndentService materialIndentService;
+	
+	@Autowired
+	private ProductInfoService productInfoService;
+	
+	@Autowired
+	private MaterialIndentProductInfoService materialIndentProductInfoService;
+	
+	@Autowired
+	private AdviceMaterialService adviceMaterialService;
+	
+	@Autowired
+	private AdviceProductInfoService adviceProductInfoService;
+	
+	@Autowired
+	private AdviceMaterialProductInfoService adviceMaterialProductInfoService;
+	
+	@Autowired
+	private StudentService studentService;
+	
+	@Autowired
+	private AddressService addressService;
+	
+	@Autowired
+	private StudentAddressService studentAddressService;
+	
+	@InitBinder
+	protected void initBinder(WebDataBinder binder) {
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+	    binder.registerCustomEditor(Date.class, new CustomDateEditor(
+	            dateFormat, false));
+	}
+	@RequestMapping(value = "/accounts", method = RequestMethod.GET)
+	public ModelAndView Student() {
+		return new ModelAndView("accounts");
+	}
+	
+	@RequestMapping(value = "/journalVouchersEntry", method = RequestMethod.GET)
+	public ModelAndView journalVoucher() {
+		return new ModelAndView("journalVouchersEntry");
+	}
+	
+	@RequestMapping(value = "/productOpeningStockEntry", method = RequestMethod.GET)
+	public ModelAndView productOpeningStockEntry() {
+		return new ModelAndView("productOpeningStockEntry");
+	}
+	
+	@RequestMapping(value="/productInformationMaster", method= RequestMethod.GET)
+	public ModelAndView productInformationMaster(){
+		
+		Map<String, Object> model = new HashMap<String, Object>();
+		
+		Map<String,String> packing = new LinkedHashMap<String,String>();
+		packing.put("100", "100gms");
+		packing.put("250", "250gms");
+		packing.put("500", "500gms");
+		packing.put("1", "1Kg");
+		model.put("packingList",packing);
+		
+		Map<String,String> technicalName = new LinkedHashMap<String,String>();
+		technicalName.put("SFate", "SFate");
+		technicalName.put("AWCEPHATE", "AWCEPHATE");
+		technicalName.put("NEWQWQ", "NEWQWQ");
+        model.put("technicalList", technicalName);		
+		
+        Map<String,String> catagory = new LinkedHashMap<String,String>();
+        catagory.put("A", "Catagory A");
+        catagory.put("B", "Catagory B");
+        catagory.put("C", "Catagory C");
+        model.put("catagoryList", catagory);		
+        
+		model.put("product", new Product());
+		return new ModelAndView("productInformationMaster",model);
+	}
+	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public ModelAndView welcome() {
+		return new ModelAndView("index");
+	}
+	
+	@RequestMapping(value = "/tender", method = RequestMethod.GET)
+	public ModelAndView Tender() {
+		return new ModelAndView("tender");
+	}
+	
+	@RequestMapping(value = "/interOfficeMemo", method = RequestMethod.GET)
+	public ModelAndView interOfficeMemo() {
+		return new ModelAndView("interOfficeMemo");
+	}
+	
+	@RequestMapping(value = "/adviceForMaterialIssue", method = RequestMethod.GET)
+	public ModelAndView adviceForMaterialIssue() {
+		return new ModelAndView("adviceForMaterialIssue");
+	}
+	
+	@RequestMapping(value = "/materialIndent", method = RequestMethod.GET)
+	public ModelAndView materialIndent() {
+		return new ModelAndView("materialIndent");
+	}
+	
+	@RequestMapping(value = "/quotation", method = RequestMethod.GET)
+	public ModelAndView quotation() {
+		return new ModelAndView("quotation");
+	}
+	
+	@RequestMapping(value = "/performance", method = RequestMethod.GET)
+	public ModelAndView performance() {
+		return new ModelAndView("performanceReport");
+	}
+	
+	@RequestMapping(value = "/installationReport", method = RequestMethod.GET)
+	public ModelAndView installationReport() {
+		return new ModelAndView("installationReport");
+	}
+	
+	@RequestMapping(value = "/deliveryChallan", method = RequestMethod.GET)
+	public ModelAndView deliveryChallan() {
+		return new ModelAndView("deliveryChallan");
+	}
+	
+	@RequestMapping(value = "/test", method = RequestMethod.GET)
+	public ModelAndView test(Model model) {
+		model.addAttribute("student", new Student());
+		return new ModelAndView("test");
+	}
+	
+	@RequestMapping(value = "/saveTender", method = RequestMethod.POST)
+	public ModelAndView saveTender(@ModelAttribute("command") TenderBean tenderBean,PaymentModeBean paymentModeBean, 
+			BindingResult result) {
+		Tender tender = prepareModel(tenderBean);
+		tenderService.addTender(tender);
+
+		PaymentMode paymentMode=prepareModel(paymentModeBean);
+		paymentModeService.addPaymentMode(paymentMode);
+		
+		TenderPaymentModeBean tenderPaymentModeBean=new TenderPaymentModeBean();
+	    tenderPaymentModeBean.setTender_id(tender.getTender_id());
+	    tenderPaymentModeBean.setPayment_mode_id(paymentMode.getPayment_mode_id());
+		TenderPaymentMode tenderPaymentMode=prepareModel(tenderPaymentModeBean);
+		tenderPaymentModeService.addTenderPaymentMode(tenderPaymentMode);
+		int id = tender.getTender_id();
+		System.out.println("last inserted id"+id);
+		return new ModelAndView("redirect:/index.html");
+	}
+	
+	private TenderPaymentMode prepareModel(TenderPaymentModeBean tenderPaymentModeBean) {
+        TenderPaymentMode tenderPaymentMode=new TenderPaymentMode();
+        tenderPaymentMode.setPayment_mode_id(tenderPaymentModeBean.getPayment_mode_id());
+        tenderPaymentMode.setTender_id(tenderPaymentModeBean.getTender_id());
+		return tenderPaymentMode;
+	}
+	
+	private PaymentMode prepareModel(PaymentModeBean paymentModeBean) {
+        PaymentMode paymentMode=new PaymentMode();
+        paymentMode.setBg(paymentModeBean.getBg());
+        paymentMode.setRdd(paymentModeBean.getRdd());
+        paymentMode.setNrdd(paymentModeBean.getNrdd());
+        paymentMode.setRtgs(paymentModeBean.getRtgs());
+        System.out.println("bg:"+paymentModeBean.getBg());
+        System.out.println("rdd:"+paymentModeBean.getRdd());
+        System.out.println("bg:"+paymentModeBean.getNrdd());
+        System.out.println("bg:"+paymentModeBean.getRtgs());
+        return paymentMode;
+	}
+	
+	
+	@RequestMapping(value = "/saveInterOfficeMemo", method = RequestMethod.POST)
+	public ModelAndView saveInterOfficeMemo(@ModelAttribute("command") InterOfficeMemoBean interOfficeMemoBean, 
+			BindingResult result,Model model) {
+        InterOfficeMemo interOfficeMemo=prepareModel(interOfficeMemoBean);
+        interOfficeMemoService.addInterOfficeMemo(interOfficeMemo);
+		return new ModelAndView("redirect:/index.html");
+	}
+	
+	@RequestMapping(value = "/saveMaterialIndent", method = RequestMethod.POST)
+	public ModelAndView saveMaterialIndent(@ModelAttribute("materialIndent") MaterialIndentBean materialIndentBean,
+			BindingResult result,@ModelAttribute("productInfo") ProductInfoBean productInfoBean,BindingResult result2,Model model) {
+		MaterialIndent materialIndent=prepareModel(materialIndentBean);
+        /*ProductInfo productInfo=prepareModel(productInfoBean);*/
+        System.out.println("Product Info::: "+productInfoBean);
+        materialIndentService.addMaterialIndent(materialIndent);
+
+        /*List<ProductInfo> productInfo=prepareModel(productInfoBean);*/
+        /*productInfoService.addProductInfo(productInfo);        */
+        String itemName[]=productInfoBean.getItem_name().split(",");
+		String brand[]=productInfoBean.getBrand().split(",");
+		String model_no[]=productInfoBean.getModel_no().split(",");
+        String qty[]=productInfoBean.getQty().split(",");
+        String approx_cost[]=productInfoBean.getApprox_cost().split(",");        
+        String mode_of_delivery[]=productInfoBean.getMode_of_delivery().split(",");
+        System.out.println("mode_of_delivery :"+mode_of_delivery.length);
+        ProductInfoBean productInfoBeanL=new ProductInfoBean();
+        System.out.println("NO of Products: "+itemName.length);
+        for(int i=0;i<itemName.length;i++)
+        {
+        	productInfoBeanL.setItem_name(itemName[i]);
+        	productInfoBeanL.setBrand(brand[i]);
+        	productInfoBeanL.setModel_no(model_no[i]);
+        	productInfoBeanL.setQty(qty[i]);
+        	productInfoBeanL.setMode_of_delivery(mode_of_delivery[i]);
+        	productInfoBeanL.setApprox_cost(approx_cost[i]);
+			ProductInfo productInfo=prepareModel(productInfoBeanL);
+			productInfoService.addProductInfo(productInfo);
+			
+			MaterialIndentProductInfoBean materialIndentProductInfoBean=new MaterialIndentProductInfoBean();
+			materialIndentProductInfoBean.setMaterial_indent_id(materialIndent.getMaterial_indent_id());
+			materialIndentProductInfoBean.setProduct_info_id(productInfo.getProduct_info_id());
+			MaterialIndentProductInfo materialIndentProductInfo=prepareModel(materialIndentProductInfoBean);
+			materialIndentProductInfoService.addMaterialIndentProductInfo(materialIndentProductInfo);
+        }
+        return new ModelAndView("redirect:/index.html");
+	}
+	
+	private MaterialIndentProductInfo prepareModel(MaterialIndentProductInfoBean materialIndentProductInfoBean) {
+
+		MaterialIndentProductInfo materialIndentProductInfo=new MaterialIndentProductInfo();
+		materialIndentProductInfo.setMaterial_indent_id(materialIndentProductInfoBean.getMaterial_indent_id());
+		materialIndentProductInfo.setProduct_info_id(materialIndentProductInfoBean.getProduct_info_id());
+		return materialIndentProductInfo;
+	}
+	private ProductInfo prepareModel(ProductInfoBean productInfoBeanL) {
+		ProductInfo productInfo=new ProductInfo();
+		productInfo.setItem_name(productInfoBeanL.getItem_name());
+		productInfo.setBrand(productInfoBeanL.getBrand());
+		productInfo.setModel_no(productInfoBeanL.getModel_no());
+        productInfo.setQty(Integer.parseInt(productInfoBeanL.getQty()));
+        productInfo.setApprox_cost(Double.parseDouble(productInfoBeanL.getApprox_cost()));
+        productInfo.setMode_of_delivery(productInfoBeanL.getMode_of_delivery());
+        return productInfo;
+	}
+	
+	/*
+	private List<ProductInfo> prepareModel(ProductInfoBean productInfoBeanList) {
+		String itemName[]=productInfoBeanList.getItem_name().split(",");
+		String brand[]=productInfoBeanList.getBrand().split(",");
+		String model_no[]=productInfoBeanList.getModel_no().split(",");
+        String qty[]=productInfoBeanList.getQty().split(",");
+        String approx_cost[]=productInfoBeanList.getApprox_cost().split(",");        
+		
+        ProductInfo productInfo=new ProductInfo();
+		List<ProductInfo> productInfoList = new ArrayList<ProductInfo>();
+		
+		System.out.println("produt Items: "+itemName.length);
+        for(int i=0;i<itemName.length;i++)
+		{
+			System.out.println("item Name:"+itemName[i]);	
+			System.out.println("Brand:"+brand[i]);
+			System.out.println("Model:"+model_no[i]);
+			System.out.println("qty"+qty[i]);
+			System.out.println("cost"+approx_cost[i]);
+			productInfo.setItem_name(itemName[i]);
+			productInfo.setBrand(brand[i]);
+			productInfo.setModel_no(model_no[i]);
+			productInfo.setQty(Integer.parseInt(qty[i]));
+			productInfo.setApprox_cost(Double.parseDouble(approx_cost[i]));
+	        productInfoList.add(productInfo);
+			System.out.println("product Info Bag"+productInfo);
+		}
+		return productInfoList;
+	}
+*/
+	/*private ProductInfo prepareModel(ProductInfoBean productInfoBean) {
+		ProductInfo productInfo=new ProductInfo();
+		System.out.println("Product Info"+productInfoBean);
+		productInfo.setProduct_info_id(productInfoBean.getPayment_mode_id());
+		productInfo.setItem_name(productInfoBean.getItem_name());
+        productInfo.setBrand(productInfoBean.getBrand());
+        productInfo.setModel_no(productInfoBean.getModel_no());
+        productInfo.setQty(productInfoBean.getQty());
+        productInfo.setMode_of_delivery(productInfoBean.getMode_of_delivery());
+        productInfo.setApprox_cost(productInfoBean.getApprox_cost());
+        System.out.println("item_names: "+productInfoBean.getItem_name());
+        System.out.println("item brand: "+productInfoBean.getBrand());
+		return productInfo;
+	}
+*/
+	private MaterialIndent prepareModel(MaterialIndentBean materialIndentBean) {
+		MaterialIndent materialIndent=new MaterialIndent();
+		materialIndent.setDepartment(materialIndentBean.getDepartment());
+		materialIndent.setDate(materialIndentBean.getDate());
+		System.out.println("Date: "+materialIndentBean.getDate());
+		materialIndent.setFrom_address(materialIndentBean.getFrom_address());
+		materialIndent.setTo_address(materialIndentBean.getTo_address());
+		materialIndent.setRef_no(materialIndentBean.getRef_no());
+		materialIndent.setDelivery_to(materialIndentBean.getDelivery_to());
+		materialIndent.setPrepared_by(materialIndentBean.getPrepared_by());
+		materialIndent.setHead_of_department(materialIndentBean.getHead_of_department());
+		materialIndent.setApproved_by(materialIndentBean.getApproved_by());
+		return materialIndent;
+	}
+
+	private InterOfficeMemo prepareModel(InterOfficeMemoBean interOfficeMemoBean) {
+		InterOfficeMemo interOfficeMemo=new InterOfficeMemo();
+		interOfficeMemo.setDate(interOfficeMemoBean.getDate());
+		interOfficeMemo.setFrom_address(interOfficeMemoBean.getFrom_address());
+		interOfficeMemo.setTo_address(interOfficeMemoBean.getTo_address());
+		interOfficeMemo.setDescription(interOfficeMemoBean.getDescription());
+		interOfficeMemo.setHuman_resource(interOfficeMemoBean.getHuman_resource());
+		interOfficeMemo.setHead_of_operations(interOfficeMemoBean.getHead_of_operations());
+		interOfficeMemo.setManaging_director(interOfficeMemoBean.getManaging_director());
+		return interOfficeMemo;
+	}
+
+	private Tender prepareModel(TenderBean tenderBean) {
+        Tender tender=new Tender();
+        tender.setTender_id(tenderBean.getTender_id());
+        tender.setFrom_department(tenderBean.getFrom_department());
+        tender.setApplication_date(tenderBean.getApplication_date());
+        tender.setFrom_address(tenderBean.getFrom_address());
+        tender.setTo_address(tenderBean.getTo_address());
+        tender.setTo_department(tenderBean.getTo_department());
+        tender.setTender_no(tenderBean.getTender_no());
+        tender.setDue_date(tenderBean.getDue_date());
+        tender.setItems(tenderBean.getItems());
+        tender.setItems_quantity(tenderBean.getItems_quantity());
+        tender.setApprox_value(tenderBean.getApprox_value());
+        tender.setIn_favour_of(tenderBean.getIn_favour_of());
+        tender.setConcerned_manager(tenderBean.getConcerned_manager());
+        tender.setApproved_by(tenderBean.getApproved_by());
+        tender.setIssued_by(tenderBean.getIssued_by());
+        tender.setAccount_use_date(tenderBean.getAccount_use_date());
+        tender.setAccount_use_value(tenderBean.getAccount_use_value());
+        tender.setAccount_use_bank_details(tenderBean.getAccount_use_bank_details());
+        tender.setAccount_use_accounts_manager(tenderBean.getAccount_use_accounts_manager());
+		return tender;
+	}
+	
+	@RequestMapping(value="/saveAdviceMaterial",method = RequestMethod.POST)
+	public ModelAndView saveAdviceMaterial(@ModelAttribute("adviceMaterial") AdviceMaterialBean adviceMaterialBean,
+			AdviceProductInfoBean adviceProductInfoBeanList,BindingResult result){
+		AdviceMaterial adviceMaterial=prepareModel(adviceMaterialBean);
+		adviceMaterialService.addAdviceMaterial(adviceMaterial);
+		
+		String item_name[]=adviceProductInfoBeanList.getItem_name().split(",");
+		String brand[]=adviceProductInfoBeanList.getBrand().split(",");
+		String model_no[]=adviceProductInfoBeanList.getModel_no().split(",");
+		String qty[]=adviceProductInfoBeanList.getQty().split(",");
+		String mode_of_delivery[]=adviceProductInfoBeanList.getMode_of_delivery().split(",");		
+		AdviceProductInfoBean adviceProductInfoBean=new AdviceProductInfoBean();
+		for(int i=0;i<item_name.length;i++)
+		{
+		adviceProductInfoBean.setItem_name(item_name[i]);
+		adviceProductInfoBean.setBrand(brand[i]);
+		adviceProductInfoBean.setModel_no(model_no[i]);
+		adviceProductInfoBean.setQty(qty[i]);
+		adviceProductInfoBean.setMode_of_delivery(mode_of_delivery[i]);
+		AdviceProductInfo adviceProductInfo=prepareModel(adviceProductInfoBean);
+		adviceProductInfoService.addAdviceProductInfo(adviceProductInfo);
+		
+		AdviceMaterialProductInfoBean adviceMaterialProductInfoBean=new AdviceMaterialProductInfoBean();
+		adviceMaterialProductInfoBean.setAdvice_material_id(adviceMaterial.getAdvice_material_id());
+		adviceMaterialProductInfoBean.setAdvice_product_info_id(adviceProductInfo.getAdvice_product_info_id());
+		AdviceMaterialProductInfo adviceMaterialProductInfo=prepareModel(adviceMaterialProductInfoBean);
+		adviceMaterialProductInfoService.addAdviceMaterialProductInfo(adviceMaterialProductInfo);
+		}
+		return new ModelAndView("redirect:/index.html");
+
+	}
+	
+	
+	private AdviceMaterialProductInfo prepareModel(AdviceMaterialProductInfoBean adviceMaterialProductInfoBean) {
+
+		AdviceMaterialProductInfo adviceMaterialProductInfo=new AdviceMaterialProductInfo();
+		adviceMaterialProductInfo.setAdvice_material_id(adviceMaterialProductInfoBean.getAdvice_material_id());
+		adviceMaterialProductInfo.setAdvice_product_info_id(adviceMaterialProductInfoBean.getAdvice_product_info_id());
+		return adviceMaterialProductInfo;
+	}
+	private AdviceProductInfo prepareModel(AdviceProductInfoBean adviceProductInfoBean) {
+        AdviceProductInfo adviceProductInfo=new AdviceProductInfo();
+        adviceProductInfo.setItem_name(adviceProductInfoBean.getItem_name());
+        adviceProductInfo.setBrand(adviceProductInfoBean.getBrand());
+        adviceProductInfo.setModel_no(adviceProductInfoBean.getModel_no());
+        adviceProductInfo.setQty(Integer.parseInt(adviceProductInfoBean.getQty()));
+        adviceProductInfo.setMode_of_delivery(adviceProductInfoBean.getMode_of_delivery());
+		return adviceProductInfo;
+	}
+	private AdviceMaterial prepareModel(AdviceMaterialBean adviceMaterialBean) {
+        AdviceMaterial adviceMaterial=new AdviceMaterial();
+        adviceMaterial.setApplication_date(adviceMaterialBean.getApplication_date());
+        adviceMaterial.setFrom_address(adviceMaterialBean.getFrom_address());
+        adviceMaterial.setTo_address(adviceMaterialBean.getTo_address());
+        adviceMaterial.setPo(adviceMaterialBean.getPo());
+        adviceMaterial.setWopo(adviceMaterialBean.getWopo());
+        adviceMaterial.setEmail(adviceMaterialBean.getEmail());
+        adviceMaterial.setPurchase_executive(adviceMaterialBean.getPurchase_executive());
+        adviceMaterial.setApproved_by(adviceMaterialBean.getApproved_by());
+        adviceMaterial.setIssued_by(adviceMaterialBean.getIssued_by());
+        adviceMaterial.setDepartment(adviceMaterialBean.getDepartment());
+		return adviceMaterial;
+	}
+	
+	@RequestMapping(value = "/saveStudent", method = RequestMethod.POST)
+	public ModelAndView saveStudent(@ModelAttribute("student") StudentBean studentBean, AddressBean addressBean,
+			BindingResult result) {
+		Address address=prepareModel(addressBean);
+		Student student = prepareModel(studentBean);
+	    addressService.addAddress(address);
+	   /* System.out.println(" address inserted Id:"+address.getAddress_id());*/
+	    studentService.addStudent(student);
+		/*System.out.println("student inserted Id:"+student.getStudent_id());*/
+		StudentAddressBean studentAddressBean=new StudentAddressBean();
+		studentAddressBean.setAddress_id(student.getStudent_id());
+		studentAddressBean.setStudent_id(address.getAddress_id());
+		
+		StudentAddress studentAddress=prepareModel(studentAddressBean);
+        		
+		studentAddressService.addStudentAddress(studentAddress);
+		return new ModelAndView("redirect:/student.html");
+	}
+	
+	private StudentAddress prepareModel(StudentAddressBean studentAddressBean) {
+		StudentAddress studentAddress=new StudentAddress();
+		studentAddress.setAddress_id(studentAddressBean.getAddress_id());
+		studentAddress.setStudent_id(studentAddressBean.getStudent_id());
+		return studentAddress;
+	}
+	private Address prepareModel(AddressBean addressBean) {
+		Address address=new Address();
+		address.setState(addressBean.getState());
+		address.setCity(addressBean.getCity());
+		address.setStreet_address(addressBean.getStreet_address());
+		address.setPostal_code(addressBean.getPostal_code());
+		address.setAddress_type(addressBean.getAddress_type());
+		return address;
+	}
+	
+	private com.erudex.akshara.model.Student prepareModel(StudentBean studentBean) {
+        Student student=new Student();
+        student.setUser_name(studentBean.getUser_name());
+        student.setPassword(studentBean.getPassword());
+        student.setFirst_name(studentBean.getFirst_name());
+        student.setLast_name(studentBean.getLast_name());
+        student.setMiddle_name(studentBean.getMiddle_name());
+        student.setGender(studentBean.getGender());
+        return student;
+	}
+}

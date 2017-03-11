@@ -1,0 +1,21 @@
+package com.erudex.akshara.service;
+
+import java.util.List;
+
+import com.erudex.akshara.model.Catagory;
+
+public class CatagoryServiceImpl implements CatagoryService {
+
+	@Override
+	public void addCatagory(Catagory catagory) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<Catagory> listCatagory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
